@@ -1,0 +1,39 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "financecash-app",
+          "appId": "1:807376845619:android:28824c78b39a2878e81c46",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "financecash-app",
+          "configurations": {
+            "android": "1:807376845619:android:28824c78b39a2878e81c46",
+            "ios": "1:807376845619:ios:aff2bde4660be5bde81c46",
+            "macos": "1:807376845619:ios:aff2bde4660be5bde81c46",
+            "web": "1:807376845619:web:f378906bdf7634d4e81c46",
+            "windows": "1:807376845619:web:dc39490e65badb2de81c46"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

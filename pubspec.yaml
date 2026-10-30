@@ -1,0 +1,40 @@
+name: financecash
+description: Aplicativo de gestão financeira.
+publish_to: 'none'
+version: 1.0.0
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+  intl: ^0.19.0
+  shared_preferences: ^2.2.3
+  fl_chart: ^0.68.0
+  notification_listener_service: ^0.3.5
+  http: ^1.2.0
+  file_picker: ^8.0.0
+  syncfusion_flutter_pdf: ^27.1.48
+  flutter_local_notifications: ^17.2.2
+  firebase_core: ^4.13.0
+  firebase_auth: ^6.5.7
+  google_sign_in: ^7.2.0
+  firebase_messaging: ^16.5.0
+  cloud_firestore: ^6.8.0
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: "assets/icon.png"
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/

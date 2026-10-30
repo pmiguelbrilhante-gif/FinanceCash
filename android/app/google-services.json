@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "807376845619",
+    "project_id": "financecash-app",
+    "storage_bucket": "financecash-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:807376845619:android:28824c78b39a2878e81c46",
+        "android_client_info": {
+          "package_name": "com.example.Fonira"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "807376845619-vvj0bssndd4imevghkvn43vpksf06umm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCEQ0-KD08J_27lRwhMkyMPVPPd7CoGb0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "807376845619-vvj0bssndd4imevghkvn43vpksf06umm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "807376845619-lmd586m0mm3q5gnt7qsknr0oeepfsdro.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.financeiroMobile"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
