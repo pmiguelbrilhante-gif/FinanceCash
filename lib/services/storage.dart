@@ -5,100 +5,113 @@ import '../models/models.dart';
 import 'package:flutter/foundation.dart';
 
 class Storage {
-  // Conecta ao banco de dados na nuvem
   static FirebaseFirestore get _db => FirebaseFirestore.instance;
-  
-  // Identifica quem está usando
-  static String get _uid => FirebaseAuth.instance.currentUser?.uid ?? 'visitante';
 
-  
+
+  static String? get currentUid => FirebaseAuth.instance.currentUser?.uid;
+
   // TRANSAÇÕES
-  static Future<List<Transaction>> loadTransactions() async {
+  static Future<List<Transaction>> loadTransactions([String? targetUid]) async {
+    final uid = targetUid ?? currentUid ?? 'visitante';
     try {
-      final doc = await _db.collection('users').doc(_uid).collection('data').doc('transactions').get();
+      final doc = await _db.collection('users').doc(uid).collection('data').doc('transactions').get();
       if (!doc.exists) return [];
       final list = doc.data()?['list'] as List? ?? [];
       return list.map((e) => Transaction.fromJson(Map<String, dynamic>.from(e))).toList();
     } catch (e) {
-      debugPrint('🚨 ERRO AO CARREGAR: $e'); 
+      debugPrint('🚨 ERRO AO CARREGAR TRANSAÇÕES (UID: $uid): $e');
       return [];
     }
   }
 
-  static Future<void> saveTransactions(List<Transaction> list) async {
-    await _db.collection('users').doc(_uid).collection('data').doc('transactions').set({
-      'list': list.map((t) => t.toJson()).toList()
-    });
-  }
-
-  static Future<void> addTransaction(Transaction tx) async {
-    final list = await loadTransactions();
-    list.insert(0, tx);
-    await saveTransactions(list);
-  }
-
-
-  // FONTES DE RENDA (PROVENTOS)
-  static Future<List<IncomeSource>> loadIncomes() async {
+  static Future<void> saveTransactions(List<Transaction> list, [String? targetUid]) async {
+    final uid = targetUid ?? currentUid ?? 'visitante';
     try {
-      final doc = await _db.collection('users').doc(_uid).collection('data').doc('incomes').get();
+      await _db.collection('users').doc(uid).collection('data').doc('transactions').set({
+        'list': list.map((t) => t.toJson()).toList()
+      });
+      debugPrint('✅ TRANSAÇÕES SALVAS COM SUCESSO (UID: $uid)');
+    } catch (e) {
+      debugPrint('🚨 ERRO AO SALVAR TRANSAÇÕES (UID: $uid): $e');
+    }
+  }
+
+  // FONTES DE RENDA
+  static Future<List<IncomeSource>> loadIncomes([String? targetUid]) async {
+    final uid = targetUid ?? currentUid ?? 'visitante';
+    try {
+      final doc = await _db.collection('users').doc(uid).collection('data').doc('incomes').get();
       if (!doc.exists) return [];
       final list = doc.data()?['list'] as List? ?? [];
       return list.map((e) => IncomeSource.fromJson(Map<String, dynamic>.from(e))).toList();
     } catch (e) {
-      debugPrint('🚨 ERRO AO CARREGAR: $e'); 
+      debugPrint('🚨 ERRO AO CARREGAR PROVENTOS (UID: $uid): $e');
       return [];
     }
   }
 
-  static Future<void> saveIncomes(List<IncomeSource> list) async {
-    await _db.collection('users').doc(_uid).collection('data').doc('incomes').set({
-      'list': list.map((e) => e.toJson()).toList()
-    });
+  static Future<void> saveIncomes(List<IncomeSource> list, [String? targetUid]) async {
+    final uid = targetUid ?? currentUid ?? 'visitante';
+    try {
+      await _db.collection('users').doc(uid).collection('data').doc('incomes').set({
+        'list': list.map((e) => e.toJson()).toList()
+      });
+    } catch (e) {
+      debugPrint('🚨 ERRO AO SALVAR PROVENTOS (UID: $uid): $e');
+    }
   }
 
-
   // INVESTIMENTOS
-  static Future<List<Investment>> loadInvestments() async {
+  static Future<List<Investment>> loadInvestments([String? targetUid]) async {
+    final uid = targetUid ?? currentUid ?? 'visitante';
     try {
-      final doc = await _db.collection('users').doc(_uid).collection('data').doc('investments').get();
+      final doc = await _db.collection('users').doc(uid).collection('data').doc('investments').get();
       if (!doc.exists) return [];
       final list = doc.data()?['list'] as List? ?? [];
       return list.map((e) => Investment.fromJson(Map<String, dynamic>.from(e))).toList();
     } catch (e) {
-      debugPrint('🚨 ERRO AO CARREGAR: $e'); 
+      debugPrint('🚨 ERRO AO CARREGAR INVESTIMENTOS (UID: $uid): $e');
       return [];
     }
   }
 
-  static Future<void> saveInvestments(List<Investment> list) async {
-    await _db.collection('users').doc(_uid).collection('data').doc('investments').set({
-      'list': list.map((e) => e.toJson()).toList()
-    });
+  static Future<void> saveInvestments(List<Investment> list, [String? targetUid]) async {
+    final uid = targetUid ?? currentUid ?? 'visitante';
+    try {
+      await _db.collection('users').doc(uid).collection('data').doc('investments').set({
+        'list': list.map((e) => e.toJson()).toList()
+      });
+    } catch (e) {
+      debugPrint('🚨 ERRO AO SALVAR INVESTIMENTOS (UID: $uid): $e');
+    }
   }
 
- 
   // CONTAS FIXAS
-  static Future<List<FixedExpense>> loadFixed() async {
+  static Future<List<FixedExpense>> loadFixed([String? targetUid]) async {
+    final uid = targetUid ?? currentUid ?? 'visitante';
     try {
-      final doc = await _db.collection('users').doc(_uid).collection('data').doc('fixed').get();
+      final doc = await _db.collection('users').doc(uid).collection('data').doc('fixed').get();
       if (!doc.exists) return [];
       final list = doc.data()?['list'] as List? ?? [];
       return list.map((e) => FixedExpense.fromJson(Map<String, dynamic>.from(e))).toList();
     } catch (e) {
-      debugPrint('🚨 ERRO AO CARREGAR: $e'); 
+      debugPrint('🚨 ERRO AO CARREGAR CONTAS FIXAS (UID: $uid): $e');
       return [];
     }
   }
 
-  static Future<void> saveFixed(List<FixedExpense> list) async {
-    await _db.collection('users').doc(_uid).collection('data').doc('fixed').set({
-      'list': list.map((e) => e.toJson()).toList()
-    });
+  static Future<void> saveFixed(List<FixedExpense> list, [String? targetUid]) async {
+    final uid = targetUid ?? currentUid ?? 'visitante';
+    try {
+      await _db.collection('users').doc(uid).collection('data').doc('fixed').set({
+        'list': list.map((e) => e.toJson()).toList()
+      });
+    } catch (e) {
+      debugPrint('🚨 ERRO AO SALVAR CONTAS FIXAS (UID: $uid): $e');
+    }
   }
 
-  
-  // CONFIGURAÇÕES LOCAIS (ONBOARDING)
+  // CONFIGURAÇÕES
   static Future<bool> isFirstLaunch() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getBool('first_launch') ?? true;

@@ -36,7 +36,11 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     
     FirebaseAuth.instance.authStateChanges().listen((user) {
-      _loadAll();
+      if (user != null) {
+        _loadAll(user.uid);
+      } else {
+        _loadAll('visitante');
+      }
     });
   }
 
@@ -46,11 +50,13 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  Future<void> _loadAll() async {
-    final t = await Storage.loadTransactions();
-    final f = await Storage.loadFixed();
-    final inc = await Storage.loadIncomes();
-    final inv = await Storage.loadInvestments();
+  Future<void> _loadAll([String? activeUid]) async {
+    final uid = activeUid ?? Storage.currentUid ?? 'visitante';
+    final t = await Storage.loadTransactions(uid);
+    final f = await Storage.loadFixed(uid);
+    final inc = await Storage.loadIncomes(uid);
+    final inv = await Storage.loadInvestments(uid);
+    
     if (mounted) {
       setState(() {
         _transactions = t;
@@ -59,8 +65,6 @@ class _HomeScreenState extends State<HomeScreen> {
         _investments = inv;
       });
       _verificarVencimentosProximos();
-      
-      
       _configurarNotificacoesWeb();
     }
   }
@@ -172,7 +176,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final txMes = _transactions.where((t) => t.date.isAfter(inicioMes.subtract(const Duration(seconds: 1)))).toList();
     
     return RefreshIndicator(
-      onRefresh: _loadAll,
+      onRefresh: () => _loadAll(),
       child: ListView(padding: const EdgeInsets.all(16), children: [
         Container(
           padding: const EdgeInsets.all(20),
